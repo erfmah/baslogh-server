@@ -1,22 +1,16 @@
 package com.baslogh.baslogh.service;
 
-import com.baslogh.baslogh.dao.CaseDao;
 import com.baslogh.baslogh.model.Case;
+import com.baslogh.baslogh.repository.CaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CaseSubmissionService {
-    private final CaseDao caseDao;
-
+public class CaseService {
     @Autowired
-    public CaseSubmissionService(CaseDao caseDao) {
-        this.caseDao = caseDao;
-    }
-
+    private CaseRepository caseRepository;
     public Case submitCase (Case newCase){
-
-        caseDao.create(newCase);
+        caseRepository.save(newCase);
         return newCase;
     }
 }
