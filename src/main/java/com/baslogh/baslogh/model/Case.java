@@ -1,6 +1,7 @@
 package com.baslogh.baslogh.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -31,14 +32,17 @@ public class Case implements Serializable {
     @JoinColumn(name = "receiver")
     User receiver;
 
-    @Column(name = "date")
-    Date submitDate;
-
     @Column(name = "subject")
     String subject;
 
     @Column(name = "title")
     String title;
+
+    @Basic(optional = false)
+    @CreationTimestamp
+    @Column(name = "created_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt = new Date();
 
     public UUID getId() {
         return id;
@@ -52,9 +56,6 @@ public class Case implements Serializable {
         return receiver;
     }
 
-    public Date getSubmitDate() {
-        return submitDate;
-    }
 
     public String getSubject() {
         return subject;
@@ -80,9 +81,6 @@ public class Case implements Serializable {
         this.receiver = receiver;
     }
 
-    public void setSubmitDate(Date submitDate) {
-        this.submitDate = submitDate;
-    }
 
     public void setSubject(String subject) {
         this.subject = subject;
@@ -110,7 +108,6 @@ public class Case implements Serializable {
     public Case(@JsonProperty("id") UUID id,
 //                @JsonProperty("author") User author,
 //                @JsonProperty("receiver")User receiver,
-                @JsonProperty("submitDate")Date submitDate,
                 @JsonProperty("subject")String subject,
                 @JsonProperty("title")String title,
                 @JsonProperty("text")String content,
@@ -118,7 +115,6 @@ public class Case implements Serializable {
         this.id = id;
 //        this.author = author;
 //        this.receiver = receiver;
-        this.submitDate = submitDate;
         this.subject = subject;
         this.title = title;
         this.text = content;
