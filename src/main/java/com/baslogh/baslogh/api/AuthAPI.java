@@ -20,8 +20,9 @@ public class AuthAPI {
     @Autowired
     private ModelMapper modelMapper;
 
+    @CrossOrigin
     @PostMapping("/register")
-    public UserLoginRegisterResponseDTO signup(@RequestBody UserRegisterRequestDTO user) {
+    public UserLoginRegisterResponseDTO register(@RequestBody UserRegisterRequestDTO user) {
          var createdUser = authService.register(modelMapper.map(user, User.class));
          var response = new UserLoginRegisterResponseDTO();
          response.setToken(createdUser.getCurrentToken());
@@ -30,6 +31,7 @@ public class AuthAPI {
          return response;
     }
 
+    @CrossOrigin
     @PostMapping("/login")
     public UserLoginRegisterResponseDTO login(@RequestBody UserLoginRequestDTO user) {
         var email = user.getEmail();

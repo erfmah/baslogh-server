@@ -5,11 +5,16 @@ import com.baslogh.baslogh.model.Role;
 
 import java.util.List;
 
-public class UserRegisterRequestDTO {
+public class  UserRegisterRequestDTO {
   
   private String email;
   List<Role> roles;
   private String password;
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
 
   public String getPassword() {
     return password;
