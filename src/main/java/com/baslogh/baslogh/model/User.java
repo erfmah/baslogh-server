@@ -1,9 +1,9 @@
 package com.baslogh.baslogh.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -11,28 +11,55 @@ import java.util.UUID;
 public class User implements Serializable {
     @Id
     @Column(name = "ID")
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private final UUID id;
-    @Column(name = "firstname")
-    private final String firstname;
-    @Column(name = "lastname")
-    private final String lastname;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
+    @Column(name = "email", unique = true)
+    private String email;
+    @Size(min = 8, message = "Minimum password length: 8 characters")
+    private String password;
+    @ElementCollection(fetch = FetchType.EAGER)
+    List<Role> roles;
 
-    public User(@JsonProperty("id") UUID id, @JsonProperty("firstname") String firstname, @JsonProperty("lastname") String lastname) {
-        this.id = id;
-        this.firstname = firstname;
-        this.lastname = lastname;
+    private String currentToken;
+
+    public String getCurrentToken() {
+        return currentToken;
     }
+
+    public void setCurrentToken(String currentToken) {
+        this.currentToken = currentToken;
+    }
+
 
     public UUID getId() {
         return id;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public void setId(UUID id) {
+        this.id = id;
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 }
