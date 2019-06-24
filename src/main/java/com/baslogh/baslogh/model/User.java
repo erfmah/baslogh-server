@@ -1,8 +1,12 @@
 package com.baslogh.baslogh.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,12 +19,39 @@ public class User implements Serializable {
     private UUID id;
     @Column(name = "email", unique = true)
     private String email;
+    @Column(name = "firstname")
+    private String firstname;
+
+    @Column(name = "lastname")
+    private String lastname;
+    @JsonIgnore
     @Size(min = 8, message = "Minimum password length: 8 characters")
     private String password;
     @ElementCollection(fetch = FetchType.EAGER)
     List<Role> roles;
 
+    @Column(nullable = true)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date accepted;
+
     private String currentToken;
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
 
     public String getCurrentToken() {
         return currentToken;
@@ -30,6 +61,10 @@ public class User implements Serializable {
         this.currentToken = currentToken;
     }
 
+
+    public Date getAccepted() {
+        return accepted;
+    }
 
     public UUID getId() {
         return id;
@@ -61,5 +96,9 @@ public class User implements Serializable {
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+    public void activate() {
+        this.accepted = new Date();
     }
 }

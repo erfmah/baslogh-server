@@ -1,8 +1,10 @@
 package com.baslogh.baslogh.security;
 
+import com.baslogh.baslogh.exception.CustomException;
 import com.baslogh.baslogh.repository.UserRepository;
 import com.baslogh.baslogh.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,10 @@ public class MyUserDetails implements UserDetailsService {
 
         if (user == null) {
             throw new UsernameNotFoundException("User '" + s + "' not found");
+        }
+
+        if (user.getAccepted() == null) {
+            throw new CustomException("Not activated", HttpStatus.FORBIDDEN);
         }
 
         return org.springframework.security.core.userdetails.User//
