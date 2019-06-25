@@ -36,4 +36,6 @@ public class ReferralService {
     public Referral findById(UUID id) {
         return referralRepository.findById(id).get();
     }
+
+//    public Set<Referral> findByRefId(UUID id) {return referralRepository.findAllByRefresnce_Id(id);}
 }

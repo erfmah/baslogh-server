@@ -21,8 +21,7 @@ public class Vote implements Serializable {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private UUID id;
 
-    @ManyToOne
-    @JoinColumn(name = "case")
+    @OneToOne
     private Case caseOf;
 
     public UUID getId() {
