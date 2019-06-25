@@ -40,7 +40,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers("/api/v1/profile/editProfile").permitAll()
         .antMatchers("/api/v1/profile/listSubmittedCase").permitAll()
         .antMatchers("/api/v1/profile/listReferredCase").permitAll()
-        // Disallow everything else..
+        .antMatchers("/api/v1/profile/listunaccepted").permitAll()
+        .antMatchers("/api/v1/profile/activate").permitAll()
+        .antMatchers("/api/v1/profile/deactive").permitAll()
+        .antMatchers("/api/v1/profile/details").permitAll()
+            .antMatchers("/api/v1/profile/detail/{id}").permitAll()
+            .antMatchers("/api/v1/case/filter").permitAll()
+            // Disallow everything else..
         .anyRequest().authenticated();
 
     http.exceptionHandling().accessDeniedPage("/api/v1/user/register");

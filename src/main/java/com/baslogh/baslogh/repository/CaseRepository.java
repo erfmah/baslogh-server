@@ -5,10 +5,13 @@ import com.baslogh.baslogh.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Date;
+import java.util.Set;
 import java.util.UUID;
 
 public interface CaseRepository extends JpaRepository<Case, UUID> {
     public List<Case> findAllByAuthor(User user);
     public List<Case> findAllByReceiver(User user);
 
+    public Set<Case> findByCreatedAtGreaterThanAndCreatedAtLessThan(Date from, Date to);
 }
