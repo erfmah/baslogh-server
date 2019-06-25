@@ -90,6 +90,17 @@ public class CaseAPI {
 //    }
 
     @CrossOrigin
+    @GetMapping("/caseinfo/{id}")
+    public ReferralPageDTO caseInfo (@PathVariable("id") String id){
+        ReferralPageDTO referralPageDTO = new ReferralPageDTO();
+        var case_ = caseService.findById(UUID.fromString(id));
+        var referals = referralService.findByRef(case_.getId());
+        referralPageDTO.setReferrals(referals);
+        referralPageDTO.setRefCase(case_);
+        return referralPageDTO;
+    }
+
+    @CrossOrigin
     @GetMapping("/like/{id}")
     public Response like (@PathVariable("id") String id){
         return Response.status(200).build();

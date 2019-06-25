@@ -14,5 +14,4 @@ public interface ReferralRepository extends JpaRepository<Referral, UUID> {
     Set<Referral> findByReceiver_Id(UUID id);
     Set<Referral> findByRefresnceCase_Id(UUID id);
     Optional<Referral> findById(UUID id);
-//    Set<Referral> findAllByRefresnce_Id(UUID id);
 }

@@ -53,6 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/v1/case/refpage/{id}").permitAll()
             .antMatchers("/api/v1/case/addreferral").permitAll()
             .antMatchers("/api/v1/case/caseinfo//{id}").permitAll()
+            .antMatchers("/api/v1/case/caseinfo/{id}").permitAll()
             // Disallow everything else..
         .anyRequest().authenticated();
 
