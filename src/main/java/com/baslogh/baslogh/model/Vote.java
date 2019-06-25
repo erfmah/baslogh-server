@@ -17,12 +17,11 @@ public class Vote implements Serializable {
     }
 
     @Id
-    @Column()
+    @Column(name = "ID")
     @GeneratedValue(strategy=GenerationType.AUTO)
     private UUID id;
 
-    @ManyToOne
-    @JoinColumn(name = "caseOf")
+    @OneToOne
     private Case caseOf;
 
     @ManyToOne

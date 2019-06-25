@@ -28,7 +28,7 @@ public class AuthAPI {
     @PostMapping("/register")
     public UserLoginRegisterResponseDTO register(@RequestBody UserRegisterRequestDTO user) {
          var createdUser = authService.register(modelMapper.map(user, User.class));
-        // userService.activate(createdUser);
+         userService.activate(createdUser);
          var response = new UserLoginRegisterResponseDTO();
          response.setToken(createdUser.getCurrentToken());
          response.setEmail(createdUser.getEmail());
