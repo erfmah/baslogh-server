@@ -1,6 +1,6 @@
 package com.baslogh.baslogh.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -33,13 +33,28 @@ public class Case implements Serializable {
     String subject;
 
     @Column(name = "title")
-    String title;
+    java.lang.String title;
+
+    @Column(name = "status" )
+    String status = Status.open.toString() ;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     @Basic(optional = false)
     @CreationTimestamp
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt = new Date();
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
 
     public UUID getId() {
         return id;
@@ -58,15 +73,15 @@ public class Case implements Serializable {
         return subject;
     }
 
-    public String getTitle() {
+    public java.lang.String getTitle() {
         return title;
     }
 
-    public String getContent() {
+    public java.lang.String getContent() {
         return text;
     }
 
-    public String getPath() {
+    public java.lang.String getPath() {
         return path;
     }
 
@@ -83,38 +98,30 @@ public class Case implements Serializable {
         this.subject = subject;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(java.lang.String title) {
         this.title = title;
     }
 
-    public void setContent(String content) {
+    public void setContent(java.lang.String content) {
         this.text = content;
     }
 
-    public void setPath(String path) {
+    public void setPath(java.lang.String path) {
         this.path = path;
     }
 
     @Column(name = "content")
-    String text;
+    java.lang.String text;
 
     @Column(name = "path")
-    String path;
+    java.lang.String path;
 
-
-    public Case(@JsonProperty("id") UUID id,
-//                @JsonProperty("author") User author,
-//                @JsonProperty("receiver")User receiver,
-                @JsonProperty("subject")String subject,
-                @JsonProperty("title")String title,
-                @JsonProperty("text")String content,
-                @JsonProperty("path")String path) {
-        this.id = id;
-//        this.author = author;
-//        this.receiver = receiver;
-        this.subject = subject;
-        this.title = title;
-        this.text = content;
-        this.path = path;
+    public java.lang.String getText() {
+        return text;
     }
+
+    public void setText(java.lang.String text) {
+        this.text = text;
+    }
+
 }

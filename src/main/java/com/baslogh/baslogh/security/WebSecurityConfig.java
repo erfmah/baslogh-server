@@ -35,7 +35,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     http.authorizeRequests()//
         .antMatchers("/api/v1/user/register").permitAll()
         .antMatchers("/api/v1/user/login").permitAll()
-        .antMatchers("/api/v1/case").permitAll()
+        .antMatchers("/api/v1/case/submit").permitAll()
+        .antMatchers("/api/v1/profile/listunaccepted").permitAll()
+        .antMatchers("/api/v1/profile/editProfile").permitAll()
+        .antMatchers("/api/v1/profile/listSubmittedCase").permitAll()
+        .antMatchers("/api/v1/profile/listReferredCase").permitAll()
         .antMatchers("/api/v1/profile/listunaccepted").permitAll()
         .antMatchers("/api/v1/profile/activate").permitAll()
         .antMatchers("/api/v1/profile/deactive").permitAll()

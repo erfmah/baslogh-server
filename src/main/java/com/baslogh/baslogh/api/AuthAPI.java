@@ -5,6 +5,7 @@ import com.baslogh.baslogh.dto.UserRegisterRequestDTO;
 import com.baslogh.baslogh.dto.UserLoginRegisterResponseDTO;
 import com.baslogh.baslogh.model.User;
 import com.baslogh.baslogh.service.AuthService;
+import com.baslogh.baslogh.service.UserService;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +19,16 @@ public class AuthAPI {
     private AuthService authService;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private ModelMapper modelMapper;
 
     @CrossOrigin
     @PostMapping("/register")
     public UserLoginRegisterResponseDTO register(@RequestBody UserRegisterRequestDTO user) {
          var createdUser = authService.register(modelMapper.map(user, User.class));
+        // userService.activate(createdUser);
          var response = new UserLoginRegisterResponseDTO();
          response.setToken(createdUser.getCurrentToken());
          response.setEmail(createdUser.getEmail());

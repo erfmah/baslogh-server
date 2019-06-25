@@ -70,6 +70,7 @@ public class User implements Serializable {
 
     private String currentToken;
 
+
     public String getCurrentToken() {
         return currentToken;
     }
