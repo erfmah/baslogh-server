@@ -9,20 +9,17 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
-enum Subject
-{
-    grievance, criticism, proposal, request;
-}
-
 
 @Entity
 @Table(name = "Cases")
 public class Case implements Serializable {
+    public Case() {
+    }
 
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private final UUID id;
+    private UUID id;
 
     @ManyToOne
     @JoinColumn(name = "author")
