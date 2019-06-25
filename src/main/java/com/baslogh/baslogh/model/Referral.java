@@ -7,18 +7,22 @@ import java.util.UUID;
 @Table(name = "Referral")
 public class Referral {
     @Id
-    @Column
-    UUID id;
+    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
 
     @ManyToOne
     @JoinColumn(name = "refrence")
     Case refresnceCase;
-    @OneToOne
-    Referral referral;
-    @Column
+    @ManyToOne
+    @JoinColumn(name = "parent")
+    Referral parent;
+    @ManyToOne
+    @JoinColumn(name = "author")
     User author;
-    @Column
-    User reciever;
+    @ManyToOne
+    @JoinColumn(name = "reciever")
+    User receiver;
     @Column
     String content;
 
@@ -30,16 +34,16 @@ public class Referral {
         this.refresnceCase = refresnce;
     }
 
-    public void setReferral(Referral referral) {
-        this.referral = referral;
+    public void setParent(Referral parent) {
+        this.parent = parent;
     }
 
     public void setAuthor(User author) {
         this.author = author;
     }
 
-    public void setReciever(User reciever) {
-        this.reciever = reciever;
+    public void setReceiver(User receiver) {
+        this.receiver = receiver;
     }
 
     public void setContent(String content) {
@@ -50,8 +54,8 @@ public class Referral {
         return author;
     }
 
-    public User getReciever() {
-        return reciever;
+    public User getReceiver() {
+        return receiver;
     }
 
     public String getContent() {
@@ -66,7 +70,7 @@ public class Referral {
         return refresnceCase;
     }
 
-    public Referral getReferral() {
-        return referral;
+    public Referral getParent() {
+        return parent;
     }
 }

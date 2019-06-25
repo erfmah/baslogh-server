@@ -1,9 +1,6 @@
 package com.baslogh.baslogh.api;
 
-import com.baslogh.baslogh.dto.CaseDTO;
-import com.baslogh.baslogh.dto.ReferralDTO;
-import com.baslogh.baslogh.dto.CaseFilterDTO;
-import com.baslogh.baslogh.dto.CaseFilterRes;
+import com.baslogh.baslogh.dto.*;
 import com.baslogh.baslogh.model.Case;
 import com.baslogh.baslogh.model.Referral;
 import com.baslogh.baslogh.model.User;
@@ -14,6 +11,9 @@ import com.baslogh.baslogh.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.ws.rs.core.Response;
+import java.util.UUID;
 
 @RequestMapping("api/v1/case")
 @RestController
@@ -41,16 +41,46 @@ public class CaseAPI {
         User reciever = userService.findByEmail(recEmail);
         case_.setAuthor(author);
         case_.setReceiver(reciever);
-        //case_= caseService.setAuthor(caseService.submitCase(case_), userService.findByEmail(request.getRemoteUser()));
-        return caseService.submitCase(case_);
+        Referral referral = new Referral();
+        referral.setAuthor(author);
+        referral.setReceiver(reciever);
+        referral.setRefresnce(case_);
+        referral.setContent(case_.getContent());
+        caseService.submitCase(case_);
+        referralService.save(referral);
+        return case_;
     }
 
     @CrossOrigin
-    @PostMapping("/addReferral")
-    public Referral addReferral (ReferralDTO referralDTO){
-        Referral referral = modelMapper.map(referralDTO, Referral.class);
-        referralService.save(referral);
-        return  referral;
+    @PostMapping("/addreferral")
+    public Referral addReferral (@RequestBody ReferralDTO referralDTO){
+        Referral referral = new Referral();
+        Referral parent = referralService.findById(referralDTO.getParent().getId());
+        User receiver = userService.findByEmail(referralDTO.getReciever().getEmail());
+        referral.setParent(parent);
+        referral.setReceiver(receiver);
+        referral.setAuthor(referralDTO.getAuthor());
+        referral.setContent(referralDTO.getContent());
+        var case_ = caseService.findById(parent.getRefresnce().getId());
+        case_.setStatus(referralDTO.getStatus());
+        referral.setRefresnce(caseService.submitCase(case_));
+        return referralService.save(referral);
+    }
+
+    @CrossOrigin
+    @GetMapping("/refpage/{id}")
+    public ReferralPageDTO addReferral (@PathVariable("id") String id){
+        ReferralPageDTO referralPageDTO = new ReferralPageDTO();
+        var referals = referralService.findAllCaseReferralsByReferralId(UUID.fromString(id));
+        referralPageDTO.setReferrals(referals);
+        referralPageDTO.setRefCase(caseService.findById(referals.iterator().next().getRefresnce().getId()));
+        return referralPageDTO;
+    }
+
+    @CrossOrigin
+    @GetMapping("/like/{id}")
+    public Response like (@PathVariable("id") String id){
+        return Response.status(200).build();
     }
 
 

@@ -27,6 +27,10 @@ public class User implements Serializable {
     private Set<Case> casesWritten;
 
     @JsonIgnore
+    @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
+    private Set<Case> referred;
+
+    @JsonIgnore
     public Set<Case> getCasesWritten() {
         return casesWritten;
     }
@@ -39,6 +43,14 @@ public class User implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
     private Set<Case> casesToDo;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
+    private Set<Referral> refferedToDo;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    private Set<Referral> refferer;
 
     public String getFirstname() {
         return firstname;

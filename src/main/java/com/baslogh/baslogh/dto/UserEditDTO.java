@@ -2,11 +2,12 @@ package com.baslogh.baslogh.dto;
 
 import com.baslogh.baslogh.model.User;
 
-public class UserDTO {
+public class UserEditDTO {
     String firstname;
     String lastname;
     String Email;
     String password;
+    String resetPassword;
 
     public User getUSer(User user){
         if(firstname!= null)
@@ -51,6 +52,14 @@ public class UserDTO {
         return password;
     }
 
-    public UserDTO() {
+    public UserEditDTO() {
+    }
+
+    public String getResetPassword() {
+        return resetPassword;
+    }
+
+    public void setResetPassword(String resetPassword) {
+        this.resetPassword = resetPassword;
     }
 }

@@ -10,6 +10,7 @@ import java.util.List;
 
 import java.util.Date;
 import java.util.Set;
+import java.util.UUID;
 
 @Service
 public class CaseService {
@@ -29,7 +30,10 @@ public class CaseService {
     public List<Case> findByReceiver(User user){
         return caseRepository.findAllByReceiver(user);
     }
-    public Set<Case> filterBetweenDates (Date from, Date to){
+    public Set<Case> filterBetweenDates (Date from, Date to) {
         return caseRepository.findByCreatedAtGreaterThanAndCreatedAtLessThan(from, to);
+    }
+    public Case findById(UUID id) {
+        return caseRepository.findById(id).get();
     }
 }

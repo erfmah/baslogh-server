@@ -2,11 +2,11 @@ package com.baslogh.baslogh.api;
 
 import com.baslogh.baslogh.dto.*;
 import com.baslogh.baslogh.model.Case;
+import com.baslogh.baslogh.model.Referral;
 import com.baslogh.baslogh.model.User;
-import com.baslogh.baslogh.service.AuthService;
 import com.baslogh.baslogh.service.CaseService;
+import com.baslogh.baslogh.service.ReferralService;
 import com.baslogh.baslogh.service.UserService;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,17 +20,10 @@ import java.util.UUID;
 import com.baslogh.baslogh.dto.UserActivateDTO;
 import com.baslogh.baslogh.dto.UserDetailDTO;
 import com.baslogh.baslogh.dto.UserDetailsWithCaseDTO;
-import com.baslogh.baslogh.model.User;
-import com.baslogh.baslogh.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.core.Response;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 
 @RequestMapping("api/v1/profile")
@@ -42,6 +35,9 @@ public class UserAPI {
 
     @Autowired
     CaseService caseService;
+
+    @Autowired
+    ReferralService referralService;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -72,9 +68,6 @@ public class UserAPI {
     @CrossOrigin
     @GetMapping("/listSubmittedCase/{id}")
     public List<Case> findSubmittedCase(@PathVariable("id") String id,HttpServletRequest request) {
-        System.out.println("get sub list");
-
-        String email = "er.mahmoudzadeh@gmail.com";
         UUID uid = UUID.fromString(id);
         Optional<User> user = userService.findById(uid);
         var cases = caseService.findByAuthor(user.get());
@@ -83,21 +76,15 @@ public class UserAPI {
     }
 
     @CrossOrigin
-    @GetMapping("/listReferredCase/{id}")
-    public List<Case> findReferredCase(@PathVariable("id") String id, HttpServletRequest request) {
-        System.out.println("get ref list");
+    @GetMapping("/listrefferals/{id}")
+    public Set<Referral> findReferralls(@PathVariable("id") String id, HttpServletRequest request) {
         UUID uid = UUID.fromString(id);
-        Optional<User> user = userService.findById(uid);
-        var cases = caseService.findByReceiver(user.get());
-        System.out.println(cases.size());
+        var cases = referralService.findByReciever(uid);
         return cases;
     }
     @CrossOrigin
     @GetMapping("/numOfSubmittedCase/{id}")
     public int numOfSubmittedCase(@PathVariable("id") String id,HttpServletRequest request) {
-        System.out.println("get sub list");
-
-        String email = "er.mahmoudzadeh@gmail.com";
         UUID uid = UUID.fromString(id);
         Optional<User> user = userService.findById(uid);
         var cases = caseService.findByAuthor(user.get());
@@ -114,17 +101,18 @@ public class UserAPI {
 
     @CrossOrigin
     @PostMapping("/editProfile/{id}")
-    public User editProfile(@RequestBody UserDTO userDTO,@PathVariable("id") String id, HttpServletRequest request) {
-        UUID uid = UUID.fromString(id);
+    public User editProfile(@RequestBody UserEditDTO userDTO, @PathVariable("id") String id, HttpServletRequest request) {
+            UUID uid = UUID.fromString(id);
         Optional<User> user = userService.findById(uid);
         User user_ = userDTO.getUSer(user.get());
-        if (userDTO.getPassword() != null) {
+        if (userDTO.getPassword() != null && userDTO.getResetPassword().equals(userDTO.getPassword())) {
             String newPass = passwordEncoder.encode(userDTO.getPassword());
             user_.setPassword(newPass);
         }
         return userService.activate(user_);
     }
 
+    @CrossOrigin
     @PostMapping("/deactive")
     @RolesAllowed("ROLE_ADMIN")
     public Response deactive(@RequestBody UserActivateDTO userToDeactive) {

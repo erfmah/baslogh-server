@@ -8,18 +8,22 @@ import javax.persistence.Id;
 
 public class ReferralDTO {
 
-    Case refresnceCase;
-    Referral referral;
+    Referral parent;
     User author;
     User reciever;
     String content;
+    String status;
 
-    public void setRefresnceCase(Case refresnceCase) {
-        this.refresnceCase = refresnceCase;
+    public void setParent(Referral parent) {
+        this.parent = parent;
     }
 
-    public void setReferral(Referral referral) {
-        this.referral = referral;
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public void setAuthor(User author) {
@@ -34,12 +38,8 @@ public class ReferralDTO {
         this.content = content;
     }
 
-    public Case getRefresnceCase() {
-        return refresnceCase;
-    }
-
-    public Referral getReferral() {
-        return referral;
+    public Referral getParent() {
+        return parent;
     }
 
     public User getAuthor() {

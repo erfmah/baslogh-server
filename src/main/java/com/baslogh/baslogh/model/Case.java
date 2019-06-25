@@ -33,7 +33,7 @@ public class Case implements Serializable {
     String subject;
 
     @Column(name = "title")
-    java.lang.String title;
+    String title;
 
     @Column(name = "status" )
     String status = Status.open.toString() ;

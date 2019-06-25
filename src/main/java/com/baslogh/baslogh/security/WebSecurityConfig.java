@@ -39,7 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers("/api/v1/profile/listunaccepted").permitAll()
         .antMatchers("/api/v1/profile/editProfile").permitAll()
         .antMatchers("/api/v1/profile/listSubmittedCase/{id}").permitAll()
-        .antMatchers("/api/v1/profile/listReferredCase/{id}").permitAll()
+        .antMatchers("/api/v1/profile/listrefferals/{id}").permitAll()
             .antMatchers("/api/v1/profile/getInfo/{id}").permitAll()
             .antMatchers("/api/v1/profile/editProfile/{id}").permitAll()
             .antMatchers("/api/v1/profile/numOfSubmittedCase/{id}").permitAll()
@@ -50,6 +50,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers("/api/v1/profile/details").permitAll()
             .antMatchers("/api/v1/profile/detail/{id}").permitAll()
             .antMatchers("/api/v1/case/filter").permitAll()
+            .antMatchers("/api/v1/case/refpage/{id}").permitAll()
+            .antMatchers("/api/v1/case/addreferral").permitAll()
             // Disallow everything else..
         .anyRequest().authenticated();
 
