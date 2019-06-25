@@ -17,13 +17,25 @@ public class Vote implements Serializable {
     }
 
     @Id
-    @Column(name = "ID")
+    @Column()
     @GeneratedValue(strategy=GenerationType.AUTO)
     private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "case")
+    @JoinColumn(name = "caseOf")
     private Case caseOf;
+
+    @ManyToOne
+    @JoinColumn(name = "voter")
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public UUID getId() {
         return id;
@@ -49,6 +61,6 @@ public class Vote implements Serializable {
         this.type = type;
     }
 
-    @Column(name = "type")
+    @Column(name = "vote_type")
     private Boolean type;
 }

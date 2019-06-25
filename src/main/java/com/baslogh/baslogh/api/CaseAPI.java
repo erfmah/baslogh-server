@@ -1,13 +1,11 @@
 package com.baslogh.baslogh.api;
 
 import com.baslogh.baslogh.dto.*;
-import com.baslogh.baslogh.model.Case;
-import com.baslogh.baslogh.model.Referral;
-import com.baslogh.baslogh.model.User;
-import com.baslogh.baslogh.model.Subject;
+import com.baslogh.baslogh.model.*;
 import com.baslogh.baslogh.service.CaseService;
 import com.baslogh.baslogh.service.ReferralService;
 import com.baslogh.baslogh.service.UserService;
+import com.baslogh.baslogh.service.VoteService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +16,9 @@ import java.util.UUID;
 @RequestMapping("api/v1/case")
 @RestController
 public class CaseAPI {
+
+    @Autowired
+    private VoteService voteService;
 
     @Autowired
     private CaseService caseService;
@@ -80,10 +81,22 @@ public class CaseAPI {
     @CrossOrigin
     @GetMapping("/like/{id}")
     public Response like (@PathVariable("id") String id){
+        var vote = new Vote();
+        vote.setCaseOf(caseService.findById(UUID.fromString(id)));
+        vote.setType(true);
+        voteService.saveVote(vote);
         return Response.status(200).build();
     }
 
-
+    @CrossOrigin
+    @GetMapping("/dislike/{id}")
+    public Response dislike (@PathVariable("id") String id){
+        var vote = new Vote();
+        vote.setCaseOf(caseService.findById(UUID.fromString(id)));
+        vote.setType(false);
+        voteService.saveVote(vote);
+        return Response.status(200).build();
+    }
 
     @PostMapping("/filter")
     @CrossOrigin
