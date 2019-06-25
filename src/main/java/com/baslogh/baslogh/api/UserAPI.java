@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 
 @RequestMapping("api/v1/profile")
@@ -54,34 +56,59 @@ public class UserAPI {
     }
 
     @CrossOrigin
-    @GetMapping("/listSubmittedCase")
-    public List<Case> findSubmittedCase(HttpServletRequest request) {
-        String email = request.getRemoteUser();
-        User user = userService.findByEmail(email);
-        var cases = caseService.findByAuthor(user);
-   //List<CaseDTO>  res = new
+    @GetMapping("/listSubmittedCase/{id}")
+    public List<Case> findSubmittedCase(@PathVariable("id") String id,HttpServletRequest request) {
+        System.out.println("get sub list");
+
+        String email = "er.mahmoudzadeh@gmail.com";
+        UUID uid = UUID.fromString(id);
+        Optional<User> user = userService.findById(uid);
+        var cases = caseService.findByAuthor(user.get());
+        System.out.println(cases.size());
         return cases;
     }
 
     @CrossOrigin
-    @GetMapping("/listReferredCase")
-    public List<Case> findReferredCase(HttpServletRequest request) {
-        String email = request.getRemoteUser();
-        User user = userService.findByEmail(email);
-        var cases = caseService.findByReceiver(user);
+    @GetMapping("/listReferredCase/{id}")
+    public List<Case> findReferredCase(@PathVariable("id") String id, HttpServletRequest request) {
+        System.out.println("get ref list");
+        UUID uid = UUID.fromString(id);
+        Optional<User> user = userService.findById(uid);
+        var cases = caseService.findByReceiver(user.get());
+        System.out.println(cases.size());
         return cases;
+    }
+    @CrossOrigin
+    @GetMapping("/numOfSubmittedCase/{id}")
+    public int numOfSubmittedCase(@PathVariable("id") String id,HttpServletRequest request) {
+        System.out.println("get sub list");
+
+        String email = "er.mahmoudzadeh@gmail.com";
+        UUID uid = UUID.fromString(id);
+        Optional<User> user = userService.findById(uid);
+        var cases = caseService.findByAuthor(user.get());
+        System.out.println(cases.size());
+        return cases.size();
+    }
+    @CrossOrigin
+    @GetMapping("/getInfo/{id}")
+    public User getInfo(@PathVariable("id") String id, HttpServletRequest request) {
+        UUID uid = UUID.fromString(id);
+        Optional<User> user = userService.findById(uid);
+        return user.get();
     }
 
     @CrossOrigin
-    @PostMapping("/editProfile")
-    public User editProfile(@RequestBody UserDTO userDTO, HttpServletRequest request){
-        String email = request.getRemoteUser();
-        User user = userService.findByEmail(email);
-        user = userDTO.getUSer(user);
+    @PostMapping("/editProfile/{id}")
+    public User editProfile(@RequestBody UserDTO userDTO,@PathVariable("id") String id, HttpServletRequest request){
+        UUID uid = UUID.fromString(id);
+        Optional<User> user = userService.findById(uid);
+        User user_ = userDTO.getUSer(user.get());
         if(userDTO.getPassword()!= null) {
             String newPass = passwordEncoder.encode(userDTO.getPassword());
-            user.setPassword(newPass);
+            user_.setPassword(newPass);
         }
-        return userService.activate(user);
+        return userService.activate(user_);
     }
+
 }
