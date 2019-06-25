@@ -1,6 +1,5 @@
 package com.baslogh.baslogh.dto;
 
-import com.baslogh.baslogh.model.Case;
 import com.baslogh.baslogh.model.Subject;
 import com.baslogh.baslogh.model.User;
 

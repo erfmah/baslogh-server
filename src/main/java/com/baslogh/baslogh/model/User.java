@@ -1,13 +1,13 @@
 package com.baslogh.baslogh.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -22,19 +22,23 @@ public class User implements Serializable {
     @Column(name = "firstname")
     private String firstname;
 
-    @Column(name = "lastname")
-    private String lastname;
     @JsonIgnore
-    @Size(min = 8, message = "Minimum password length: 8 characters")
-    private String password;
-    @ElementCollection(fetch = FetchType.EAGER)
-    List<Role> roles;
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    private Set<Case> casesWritten;
 
-    @Column(nullable = true)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date accepted;
+    @JsonIgnore
+    public Set<Case> getCasesWritten() {
+        return casesWritten;
+    }
 
-    private String currentToken;
+    @JsonIgnore
+    public Set<Case> getCasesToDo() {
+        return casesToDo;
+    }
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
+    private Set<Case> casesToDo;
 
     public String getFirstname() {
         return firstname;
@@ -51,6 +55,20 @@ public class User implements Serializable {
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
+
+    @Column(name = "lastname")
+    private String lastname;
+    @JsonIgnore
+    @Size(min = 8, message = "Minimum password length: 8 characters")
+    private String password;
+    @ElementCollection(fetch = FetchType.EAGER)
+    List<Role> roles;
+
+    @Column(nullable = true)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date accepted;
+
+    private String currentToken;
 
 
     public String getCurrentToken() {

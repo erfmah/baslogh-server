@@ -8,11 +8,12 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface UserRepository extends JpaRepository<User, UUID> {
-
   boolean existsByEmail(String username);
   User findByEmail(String email);
   void deleteByEmail(String username);
-  Optional<User> findById(UUID id);
   List<User> findAll();
   List<User> findByAcceptedIsNull();
+  Optional<User> findById(UUID id);
+  void deleteById(UUID id);
+  List<User> findByAcceptedNotNull();
 }

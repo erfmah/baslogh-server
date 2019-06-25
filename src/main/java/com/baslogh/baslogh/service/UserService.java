@@ -1,5 +1,6 @@
 package com.baslogh.baslogh.service;
 
+import com.baslogh.baslogh.model.Case;
 import com.baslogh.baslogh.model.User;
 import com.baslogh.baslogh.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -34,5 +36,24 @@ public class UserService {
         return userRepository.findByAcceptedIsNull();
     }
 
+    public List<User> listAccepted() {
+        return userRepository.findByAcceptedNotNull();
+    }
+
+    public void deactive(UUID id) {
+        userRepository.deleteById(id);
+    }
+
+    public int getCasesWrittenCount(UUID id) {
+        return this.findById(id).get().getCasesWritten().size();
+    }
+
+    public int getCasesToDoCount(UUID id) {
+        return this.findById(id).get().getCasesToDo().size();
+    }
+
+    public Set<Case> getCases(UUID id) {
+        return this.findById(id).get().getCasesWritten();
+    }
 }
 
