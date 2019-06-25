@@ -1,13 +1,13 @@
 package com.baslogh.baslogh.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -21,6 +21,24 @@ public class User implements Serializable {
     private String email;
     @Column(name = "firstname")
     private String firstname;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    private Set<Case> casesWritten;
+
+    @JsonIgnore
+    public Set<Case> getCasesWritten() {
+        return casesWritten;
+    }
+
+    @JsonIgnore
+    public Set<Case> getCasesToDo() {
+        return casesToDo;
+    }
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
+    private Set<Case> casesToDo;
 
     public String getFirstname() {
         return firstname;
